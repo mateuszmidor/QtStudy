@@ -6,13 +6,15 @@ import QtQuick.XmlListModel 2.0
   Based on "Qt DevDays 2011, Using Qt Quick for Rapid UI Prototyping and Development: Jens Bache-Wiig"
   https://www.youtube.com/watch?v=k1pnEhyF1pg
  */
+
+// The rectangle is a parent container to all the controls we put on the window
 Rectangle {
     id: screen
     width: 360
     height: 500
     color: "yellow"
 
-    // Transitions
+    // Transitions(animations)
     transitions: [
         Transition {
             NumberAnimation {
@@ -24,7 +26,7 @@ Rectangle {
         }
     ]
 
-    // States
+    // States(image list view/selected image preview)
     states: [
         // Image preview
         State {
@@ -44,39 +46,33 @@ Rectangle {
         }
     ]
 
-    // Flickr XmlListModel
+    // Flickr XmlListModel; for fetching items from flickr
     XmlListModel{
         id: flickerModel
-        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=Cat"
+        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + searchField.text
         query: "/rss/channel/item"
         namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
         XmlRole { name: "title"; query: "title/string()" }
         XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
     }
 
+    // This row layout contains our image list and image preview
     Row {
         id : displayRow
         width: parent.width
         height: parent.height
 
 
-        // An item list
+        // An image list
         ListView {
             id: listView
             width: parent.width
             height: parent.height
 
-            // Hand made Data model for the ListView
-            /*
-            ListModel {
-                id: listmodel
-                ListElement {}
-            }
-            */
-            // Fake the model with fixed 20 items
+            // Assign the flickerModel; to populate the list view with images from flickr
             model: flickerModel
 
-            // A delegate describes a prototype for a list item
+            // A delegate; this guy describes a prototype for a list item
             delegate: Image {
                 // item size
                 width: parent.width
@@ -85,24 +81,24 @@ Rectangle {
                 // item background
                 source: "images/item.jpeg"
 
-                // A picture on the left of the list item
+                // A picture thumbnail the left of the list item
                 Image {
-                    id: bullet
+                    id: thumbnail
                     anchors.left: parent.left
                     height: parent.height
                     width: parent.height
-                    source: "images/pinguin.jpeg"
+                    source: imagesource
                 }
 
-                // Some text describing the list item
+                // Picture title
                 Text {
-                    anchors.left: bullet.right
-                    anchors.verticalCenter: bullet.verticalCenter
-                    text: "Item"
+                    anchors.left: thumbnail.right
+                    anchors.verticalCenter: thumbnail.verticalCenter
+                    text: title // flickerModel.title
                     font.pixelSize: 20
                 }
 
-                // A picture on the right of the list item
+                // An arrow on the right of the list item
                 Image {
                     source: "images/arrow.jpeg"
                     anchors.right: parent.right
@@ -114,7 +110,10 @@ Rectangle {
                 // Clickable area
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: screen.state = "view"
+                    onClicked: {
+                        screen.state = "view"
+                        imageView.source = imagesource.replace("_m", "_b") // change medium for big
+                    }
                 }
             } // delegate
         } // ListView
@@ -125,6 +124,7 @@ Rectangle {
             width: parent.width
             height: parent.height
             source: "images/pinguin.jpeg"
+            fillMode: Image.PreserveAspectFit
 
             MouseArea {
                 anchors.fill: parent
@@ -144,9 +144,12 @@ Rectangle {
         border.left: 5; border.top: 5
         border.right: 5; border.bottom: 5
 
+        // Search field input
         TextField {
+            id: searchField
             anchors.centerIn: parent
             width:200
+            text: "Cat"
         }
     }
 }
