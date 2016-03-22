@@ -16,12 +16,15 @@ Item {
         border.top: 4
         border.bottom: 4
         */
-        source: "images/edit.png"
+       // source: "images/edit.png"
         anchors.fill: parent
     }
 
     // The text input itself
     TextInput {
+        horizontalAlignment: TextInput.AlignHCenter
+        color: "white"
+        font.bold: true
         id: input
         font.pixelSize: 20
         width: parent.width-16

@@ -10,9 +10,9 @@ import QtQuick.XmlListModel 2.0
 // The rectangle is a parent container to all the controls we put on the window
 Rectangle {
     id: screen
-    width: 360
+    width: 400
     height: 500
-    color: "yellow"
+    color: "#333333"
 
     // Transitions(animations)
     transitions: [
@@ -79,19 +79,22 @@ Rectangle {
                 height: 80
 
                 // item background
-                source: "images/item.jpeg"
+                source: "images/item.png"
 
                 // A picture thumbnail the left of the list item
                 Image {
                     id: thumbnail
-                    anchors.left: parent.left
-                    height: parent.height
+                    x: 4
+                    y: 2
+                    height: parent.height - 4
                     width: parent.height
                     source: imagesource
                 }
 
                 // Picture title
                 Text {
+                    anchors.leftMargin: 8
+
                     anchors.left: thumbnail.right
                     anchors.verticalCenter: thumbnail.verticalCenter
                     text: title // flickerModel.title
@@ -100,7 +103,8 @@ Rectangle {
 
                 // An arrow on the right of the list item
                 Image {
-                    source: "images/arrow.jpeg"
+                    id: showPreview
+                    source: "images/ShowPreview.png"
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     height: parent.height
@@ -112,7 +116,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         screen.state = "view"
-                        imageView.source = imagesource.replace("_m", "_b") // change medium for big
+                        imageView.source = imagesource.replace("_s", "_b") // change medium for big
                     }
                 }
             } // delegate
@@ -139,10 +143,10 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        source: "images/toolbar.jpeg"
+        source: "images/toolbar.png"
         height: 50
-        border.left: 5; border.top: 5
-        border.right: 5; border.bottom: 5
+        border.left: 2; border.top: 2
+        border.right: 2; border.bottom: 2
 
         // Search field input
         TextField {
