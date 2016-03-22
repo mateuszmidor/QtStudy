@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtQuick.XmlListModel 2.0
-
+import QtQuick.Layouts 1.1
 /**
   Flicker image viewer done in pure QML
   Based on "Qt DevDays 2011, Using Qt Quick for Rapid UI Prototyping and Development: Jens Bache-Wiig"
@@ -12,7 +12,7 @@ Rectangle {
     id: screen
     width: 400
     height: 500
-    color: "#333333"
+    color: "#222222"  // pretty dark gray
 
     // Transitions(animations)
     transitions: [
@@ -81,35 +81,38 @@ Rectangle {
                 // item background
                 source: "images/item.png"
 
-                // A picture thumbnail the left of the list item
-                Image {
-                    id: thumbnail
-                    x: 4
-                    y: 2
-                    height: parent.height - 4
-                    width: parent.height
-                    source: imagesource
-                }
+                // Thumbnail, image title, "show preview" arrow
+                RowLayout {
+                    anchors.fill: parent
 
-                // Picture title
-                Text {
-                    anchors.leftMargin: 8
+                    // A picture thumbnail the left of the list item
+                    Image {
+                        id: thumbnail
+                        Layout.maximumHeight: parent.height
+                        Layout.maximumWidth: parent.height
+                        source: imagesource
+                    }
 
-                    anchors.left: thumbnail.right
-                    anchors.verticalCenter: thumbnail.verticalCenter
-                    text: title // flickerModel.title
-                    font.pixelSize: 20
-                }
+                    // Picture title
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
 
-                // An arrow on the right of the list item
-                Image {
-                    id: showPreview
-                    source: "images/ShowPreview.png"
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: parent.height
-                    width: parent.height
-                }
+                        // this should be done better, automatically due to RowLayout...
+                        Layout.preferredWidth: parent.width - 2 * parent.height
+
+                        elide: Text.ElideRight
+                        text: title // flickerModel.title
+                        font.pixelSize: 20
+                    }
+
+                    // An arrow on the right of the list item
+                    Image {
+                        id: showPreview
+                        source: "images/ShowPreview.png"
+                        Layout.maximumHeight: parent.height
+                        Layout.maximumWidth: parent.height
+                    }
+                } // RowLayout
 
                 // Clickable area
                 MouseArea {
