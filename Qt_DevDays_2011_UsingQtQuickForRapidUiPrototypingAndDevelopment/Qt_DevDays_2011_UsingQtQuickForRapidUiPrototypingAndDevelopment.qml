@@ -56,6 +56,14 @@ Rectangle {
         XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
     }
 
+    ListModel {
+        id: fakeModel
+        ListElement { title: "Black Cat"; imagesource: "images/pinguin.jpeg" }
+        ListElement { title: "Red Cat"; imagesource: "images/pinguin.jpeg" }
+        ListElement { title: "Yellow Cat"; imagesource: "images/pinguin.jpeg" }
+        ListElement { title: "Blue Cat"; imagesource: "images/pinguin.jpeg" }
+    }
+
     // This row layout contains our image list and image preview
     Row {
         id : displayRow
