@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.XmlListModel 2.0
 import QtQuick.Layouts 1.1
 /**
@@ -11,7 +11,7 @@ import QtQuick.Layouts 1.1
 Rectangle {
     id: screen
     width: 400
-    height: 500
+    height: 550
     color: "#222222"  // pretty dark gray
 
     // Transitions(animations)
@@ -71,15 +71,27 @@ Rectangle {
 
             // Assign the flickerModel; to populate the list view with images from flickr
             model: flickerModel
+            focus: true
 
             // A delegate; this guy describes a prototype for a list item
             delegate: Image {
                 // item size
                 width: parent.width
-                height: 80
+                height: 100
 
                 // item background
                 source: "images/item.png"
+
+                // highlight focused item
+                opacity: (focus ? 1 : 0.5)
+
+                // add a smooth fade in/fade out item animation
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 600
+                        easing.type: Easing.OutQuad
+                    }
+                }
 
                 // Thumbnail, image title, "show preview" arrow
                 RowLayout {
@@ -109,17 +121,20 @@ Rectangle {
                     Image {
                         id: showPreview
                         source: "images/ShowPreview.png"
-                        Layout.maximumHeight: parent.height
-                        Layout.maximumWidth: parent.height
                     }
                 } // RowLayout
 
                 // Clickable area
                 MouseArea {
                     anchors.fill: parent
+                    hoverEnabled: true
                     onClicked: {
                         screen.state = "view"
                         imageView.source = imagesource.replace("_s", "_b") // change medium for big
+                    }
+
+                    onEntered: {
+                        parent.forceActiveFocus()
                     }
                 }
             } // delegate
