@@ -3,11 +3,12 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 
+// a window for displaying contents
 Window {
     visible: true
     width: 300; height: 200
 
-    // background
+    // background image
     Image {
         anchors.fill: parent
         source: "images/toolbar.png"
@@ -29,6 +30,7 @@ Window {
 
         // channel name
         Text {
+            // here we load channel name from qobject
             text: qobject.channelName;
 
             anchors.horizontalCenter: parent.horizontalCenter
@@ -40,6 +42,7 @@ Window {
 
         // tune button
         Button {
+            // here we forward button clicked event to qobject
             onClicked: qobject.nextChannelClicked()
 
             id: button1
