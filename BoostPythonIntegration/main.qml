@@ -1,29 +1,34 @@
 import QtQuick 2.3
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.2
 
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("BoostPythonIntegration demo")
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: console.log("Open action triggered");
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onTriggered: Qt.quit();
-            }
+   Column {
+
+        spacing: 5
+        anchors.fill: parent
+        TextArea {
+            id: pythonEditor
+            tabChangesFocus: false
+            width: parent.width
+            text: "print 'Hello from python!'"
         }
-    }
-
-    Label {
-        text: qsTr("Hello World")
-        anchors.centerIn: parent
+        Button {
+            text: "run!"
+            anchors.horizontalCenter: parent.horizontalCenter
+            transformOrigin: Item.Center
+            onClicked: _python.run(pythonEditor.text)
+        }
+        TextArea {
+            width: parent.width
+            text: _python.output
+            readOnly: true
+        }
     }
 }
 
