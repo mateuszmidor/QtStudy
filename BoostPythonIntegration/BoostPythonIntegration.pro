@@ -3,7 +3,8 @@ TEMPLATE = app
 QT += qml quick widgets
 
 SOURCES += main.cpp \
-    pythonstdioredirect.cpp
+    pythonstdioredirect.cpp \
+    pythonrunner.cpp
 
 RESOURCES += qml.qrc
 
@@ -20,6 +21,7 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    pythoninterpreter.h \
-    pythonstdioredirect.h
+    pythonstdioredirect.h \
+    pythonrunner.h \
+    qpython.h
 

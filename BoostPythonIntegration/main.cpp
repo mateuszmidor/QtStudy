@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "pythoninterpreter.h"
+#include "qpython.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     // python interpreter QObject to be exposed in QML
-    PythonInterpreter _python;
+    QPython _python;
 
     // expose our qobject to the qml engine under name "_python"
     engine.rootContext()->setContextProperty("_python", &_python);
