@@ -8,9 +8,11 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    // python interpreter QObject to be exposed in QML
     PythonInterpreter _python;
 
-    // expose our qobject to the qml engine under name "qobject"
+    // expose our qobject to the qml engine under name "_python"
     engine.rootContext()->setContextProperty("_python", &_python);
 
     // load the scene

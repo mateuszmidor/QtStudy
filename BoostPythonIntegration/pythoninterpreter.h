@@ -1,9 +1,12 @@
 #ifndef PYTHONINTERPRETER
 #define PYTHONINTERPRETER
 
-#include <QObject>
 #include <boost/python.hpp>
+#include <QObject>
+
 #include <iostream>
+
+#include "pythonstdioredirect.h"
 
 class PythonInterpreter : public QObject {
     Q_OBJECT
@@ -13,8 +16,11 @@ class PythonInterpreter : public QObject {
 
 public:
     PythonInterpreter() {
+         // initialize python interpreter and execution context
+         initializePython();
+
+         // handle "run" signal in "runPythonCode" method
          QObject::connect(this, &PythonInterpreter::run, this, &PythonInterpreter::runPythonCode);
-         Py_Initialize();
     }
 
     // "channelName" property getter
@@ -38,19 +44,42 @@ signals:
     void run(const QString &pythonCode);
 
 private:
-    QString output = "[Python output is currently being sent to termianal]";
+    QString output;
+    boost::python::object main_namespace;
+    PythonStdIoRedirect python_stdio_redirector;
+
+private:
+    void initializePython()
+    {
+        // initialize the interpreter and main context
+        using namespace boost::python;
+        Py_Initialize();
+        object main_module = import("__main__");
+        main_namespace = main_module.attr("__dict__");
+
+        // redirect python output to PythonStdIoRedirect
+        main_namespace["PythonStdIoRedirect"] = class_<PythonStdIoRedirect>("PythonStdIoRedirect", init<>())
+            .def("write", &PythonStdIoRedirect::write);
+
+        //boost::python::import("sys").attr("stderr") = python_stdio_redirector;
+        boost::python::import("sys").attr("stdout") = python_stdio_redirector;
+    }
+
     void runPythonCode(const QString &pythonCode) {
         using namespace boost::python;
-        object main_module = import("__main__");
-        object main_namespace = main_module.attr("__dict__");
+
+        // clean the python output buffer
+        python_stdio_redirector.clean();
 
         try {
-                object ignored = exec(pythonCode.toStdString().c_str(), main_namespace);
-                std::cout << std::flush;
-                //setOutput(ss.str().c_str());
-            } catch (error_already_set&) {
-                PyErr_Print();
-            }        
+            // run the python code
+            object ignored = exec(pythonCode.toStdString().c_str(), main_namespace);
+
+            // update the output to the python output
+            setOutput(python_stdio_redirector.getOutput().c_str());
+        } catch (error_already_set&) {
+            PyErr_Print();
+        }
     }
 };
 

@@ -8,14 +8,14 @@ ApplicationWindow {
     height: 480
     title: qsTr("BoostPythonIntegration demo")
 
-   Column {
+   ColumnLayout {
 
         spacing: 5
         anchors.fill: parent
         TextArea {
             id: pythonEditor
-            tabChangesFocus: false
-            width: parent.width
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             text: "print 'Hello from python!'"
         }
         Button {
@@ -25,8 +25,11 @@ ApplicationWindow {
             onClicked: _python.run(pythonEditor.text)
         }
         TextArea {
-            width: parent.width
+            id: pythonOutput
+            Layout.fillWidth: true
             text: _python.output
+            textColor: "#12550a"
+            font.family: "FreeMono"
             readOnly: true
         }
     }
