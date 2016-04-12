@@ -13,7 +13,7 @@ ApplicationWindow {
     TextEdit {
         anchors.fill: parent
         objectName: "pythonEdit"
-        text: "for x in range(0, 3):\n\tprint 'We are on time %d' % (x)"
+        text: "# print string in a loop\nfor x in range(0, 3):\n\tprint 'We are on time %d' % (x)"
     }
 }
 
