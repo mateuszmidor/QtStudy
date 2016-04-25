@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>data/shader.frag</file>
+        <file>data/shader.vert</file>
+        <file>data/Diablo.ms3d</file>
+    </qresource>
+</RCC>
