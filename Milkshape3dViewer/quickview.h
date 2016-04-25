@@ -9,10 +9,11 @@
 class QuickView : public QQuickView
 {
     Q_OBJECT
-    Camera *camera;
-    Renderer *renderer;
-    QTimer *timer;
-
+    Camera camera;
+    Renderer renderer;
+    QTimer timer;
+    const float TARGET_FPS = 60.0f;
+    const float TARGET_DELTA_TIME_SEC = 1.f / TARGET_FPS;
 public:
     QuickView(QWindow *parent = nullptr);
     void showCentralized();

@@ -3,7 +3,7 @@
 #include "quickview.h"
 
 
-QuickView::QuickView(QWindow *parent) : QQuickView(parent), camera(new Camera()), renderer(new Renderer())
+QuickView::QuickView(QWindow *parent) : QQuickView(parent)
 {
     QSurfaceFormat format;
     format.setMajorVersion(3);
@@ -26,11 +26,11 @@ QuickView::QuickView(QWindow *parent) : QQuickView(parent), camera(new Camera())
 
     setResizeMode(SizeRootObjectToView);
    // rootContext()->setContextProperty("_camera", camera);
+
     setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &QuickView::onTimer);
-    timer->start(16);
+    connect(&timer, &QTimer::timeout, this, &QuickView::onTimer);
+    timer.start(TARGET_DELTA_TIME_SEC * 1000);
 }
 
 void QuickView::showCentralized() {
@@ -42,31 +42,34 @@ void QuickView::showCentralized() {
 
 // On timer event; every 16ms
 void QuickView::onTimer() {
-    const float dt = 16.0f / 1000;
-    camera->azimuth += 15.f * dt;
+    camera.azimuth += 15.f * TARGET_DELTA_TIME_SEC;
     update();
 }
 
+// [Render thread]
 void QuickView::initializeUnderlay() {
-    renderer->initialize();
+    renderer.initialize();
     resetOpenGLState();
 }
 
+// [Render thread]
 void QuickView::synchronizeUnderlay() {
-    renderer->setAzimuth(camera->azimuth);
-    renderer->setElevation(camera->elevation);
-    renderer->setDistance(camera->distance);
-    renderer->setViewportSize(this->size());
+    renderer.setAzimuth(camera.azimuth);
+    renderer.setElevation(camera.elevation);
+    renderer.setDistance(camera.distance);
+    renderer.setViewportSize(this->size());
+    renderer.prepare(TARGET_DELTA_TIME_SEC);
 }
 
+// [Render thread]
 void QuickView::renderUnderlay() {
-
-    renderer->render();
+    renderer.render();
     resetOpenGLState();
 }
 
+// [Render thread]
 void QuickView::invalidateUnderlay() {
 
-    renderer->invalidate();
+    renderer.invalidate();
     resetOpenGLState();
 }
