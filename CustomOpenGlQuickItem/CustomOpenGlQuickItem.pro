@@ -3,7 +3,8 @@ TEMPLATE = app
 QT += qml quick
 CONFIG += c++11
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    fborenderer.cpp
 
 RESOURCES += qml.qrc
 
@@ -15,7 +16,10 @@ include(deployment.pri)
 
 HEADERS += \
     openglitem.h \
-    openglrenderer.h
+    fborenderer.h \
+    cuberenderer.h
 
-DISTFILES +=
+DISTFILES += \
+    shader.frag \
+    shader.vert
 
