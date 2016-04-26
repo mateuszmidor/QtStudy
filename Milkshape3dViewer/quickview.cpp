@@ -1,4 +1,5 @@
 #include <QQuickWindow>
+#include <QQmlContext>
 #include <QScreen>
 #include "quickview.h"
 
@@ -25,7 +26,7 @@ QuickView::QuickView(QWindow *parent) : QQuickView(parent)
     setPersistentOpenGLContext(true);
 
     setResizeMode(SizeRootObjectToView);
-   // rootContext()->setContextProperty("_camera", camera);
+    rootContext()->setContextProperty("_rendererControl", &rendererControl);
 
     setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 
@@ -58,6 +59,7 @@ void QuickView::synchronizeUnderlay() {
     renderer.setElevation(camera.elevation);
     renderer.setDistance(camera.distance);
     renderer.setViewportSize(this->size());
+    renderer.setModelFilename(rendererControl.getModelFilename());
     renderer.prepare(TARGET_DELTA_TIME_SEC);
 }
 

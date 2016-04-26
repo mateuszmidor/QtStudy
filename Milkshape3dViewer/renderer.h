@@ -12,6 +12,7 @@ class Renderer : public QObject, protected QOpenGLFunctions  {
     QSize viewportSize;
     QOpenGLShaderProgram *shaderProgram;
     QMatrix4x4 projectionMatrix;
+    QString modelFilename;
     CMS3DModel model;
 
 public:
@@ -36,6 +37,13 @@ public:
         distance = value;
     }
 
+    void setModelFilename(const QString &filename) {
+        if (modelFilename != filename) {
+            modelFilename = filename;
+            model.Load(filename.toStdString().c_str());
+        }
+    }
+
     // Set new viewport size
     void setViewportSize(const QSize &size) {
         viewportSize = size;
@@ -57,7 +65,7 @@ public:
             shaderProgram->link();
         }
 
-        model.Load("data/Diablo.ms3d");
+       // model.Load("data/Diablo.ms3d");
     }
 
     void invalidate() {

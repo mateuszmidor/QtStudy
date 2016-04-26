@@ -24,5 +24,6 @@ HEADERS += \
     camera.h \
     quickview.h \
     renderer.h \
-    cMS3DModel.h
+    cMS3DModel.h \
+    renderercontrol.h
 

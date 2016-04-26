@@ -172,7 +172,7 @@ public:
     virtual bool Load(std::ifstream &stream);
 
 //	Funkcja wczytuje model z pliku	
-	virtual bool Load(char *filename);
+    virtual bool Load(const char *filename);
 
 //	Funkcja zapisuje model do strumienia otwartego do zapisu
     virtual bool Save(std::ofstream &stream);

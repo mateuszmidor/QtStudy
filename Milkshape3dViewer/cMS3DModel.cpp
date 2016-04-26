@@ -442,7 +442,7 @@ bool CMS3DModel::Load(ifstream &stream)
 
 //------------------------------------------------------------------------------
 //	Funkcja wczytuje model z pliku
-bool CMS3DModel::Load(char *filename)
+bool CMS3DModel::Load(const char *filename)
 {
 	ifstream stream(filename, ios::in | ios::binary);
 	if (!stream)
