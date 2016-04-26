@@ -17,10 +17,9 @@ void FBORenderer::synchronize(QQuickFramebufferObject *item) {
     window = item->window();
 
     // Copy state to renderer
-    renderer.setViewportSize(window->size());
-
     OpenGlItem* i = static_cast<OpenGlItem *>(item);
     renderer.setAzimuth(i->getAzimuth());
+    renderer.setViewportSize(QSize(item->width(), item->height()));
 }
 
 void FBORenderer::render() {
