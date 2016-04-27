@@ -4,5 +4,6 @@
         <file>data/shader.frag</file>
         <file>data/shader.vert</file>
         <file>data/Diablo.ms3d</file>
+        <file>DragArea.qml</file>
     </qresource>
 </RCC>

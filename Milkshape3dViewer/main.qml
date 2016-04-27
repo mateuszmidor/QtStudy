@@ -6,8 +6,11 @@ import QtQuick.Dialogs 1.0
 
 Item {
     id: panel
-    MouseArea {
+
+    DragArea {
         anchors.fill: parent
+        onDragLeft: {_cameraControl.azimuth += dx; _cameraControl.elevation += dy; }
+        onDragRight: _cameraControl.distance += dy;
     }
 
     Rectangle {
@@ -51,10 +54,11 @@ Item {
                 tickmarksEnabled: false
                 minimumValue: -128
                 maximumValue: -4
-                value: minimumValue
+                //value: minimumValue
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                onValueChanged: _cameraControl.distance = value
+                value: _cameraControl.distance
+               // onValueChanged: _cameraControl.distance = value
             }
         }
     }

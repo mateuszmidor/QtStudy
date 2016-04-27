@@ -79,7 +79,7 @@ public:
     // Render the scene
     void render() {
         QMatrix4x4 modelviewMatrix;
-        modelviewMatrix.translate(0.0, -32, distance);
+        modelviewMatrix.translate(0.0, 0.0, distance);
         modelviewMatrix.rotate(elevation, 1.0, 0.0, 0.0);
         modelviewMatrix.rotate(azimuth, 0.0, 1.0, 0.0);
 

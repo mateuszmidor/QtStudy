@@ -44,7 +44,7 @@ void QuickView::showCentralized() {
 
 // On timer event; every 16ms
 void QuickView::onTimer() {
-    camera.azimuth += 15.f * TARGET_DELTA_TIME_SEC;
+    camera.setAzimuth(camera.getAzimuth() + 15.f * TARGET_DELTA_TIME_SEC);
     update();
 }
 
@@ -56,8 +56,8 @@ void QuickView::initializeUnderlay() {
 
 // [Render thread]
 void QuickView::synchronizeUnderlay() {
-    renderer.setAzimuth(camera.azimuth);
-    renderer.setElevation(camera.elevation);
+    renderer.setAzimuth(camera.getAzimuth());
+    renderer.setElevation(camera.getElevation());
     renderer.setDistance(camera.getDistance());
     renderer.setViewportSize(this->size());
     renderer.setModelFilename(rendererControl.getModelFilename());
