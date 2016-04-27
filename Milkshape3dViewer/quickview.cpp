@@ -27,6 +27,7 @@ QuickView::QuickView(QWindow *parent) : QQuickView(parent)
 
     setResizeMode(SizeRootObjectToView);
     rootContext()->setContextProperty("_rendererControl", &rendererControl);
+    rootContext()->setContextProperty("_cameraControl", &camera);
 
     setSource(QUrl(QStringLiteral("qrc:/main.qml")));
 
@@ -57,7 +58,7 @@ void QuickView::initializeUnderlay() {
 void QuickView::synchronizeUnderlay() {
     renderer.setAzimuth(camera.azimuth);
     renderer.setElevation(camera.elevation);
-    renderer.setDistance(camera.distance);
+    renderer.setDistance(camera.getDistance());
     renderer.setViewportSize(this->size());
     renderer.setModelFilename(rendererControl.getModelFilename());
     renderer.prepare(TARGET_DELTA_TIME_SEC);
