@@ -1,8 +1,11 @@
 #ifndef TUNERLISTMODEL
 #define TUNERLISTMODEL
 
+#include <QObject>
+#include <QDebug>
 #include <QAbstractListModel>
 class TunerListModel : public QAbstractListModel {
+    Q_OBJECT
 
     // define some constant channel data
     static const int NUM_CHANNELS  = 3;
@@ -13,6 +16,7 @@ class TunerListModel : public QAbstractListModel {
         Name = Qt::UserRole + 1,
         Frequency
     };
+
 
 public:
     // QAbstractListModel pure-virtual function 1.
@@ -29,7 +33,7 @@ public:
     }
 
     // QAbstractListModel pure-virtual function 3.
-    QVariant data(const QModelIndex& modelIndex, int role) const override {
+    Q_INVOKABLE QVariant data(const QModelIndex& modelIndex, int role) const override {
         int row = modelIndex.row();
         switch (role) {
         case Name:
@@ -37,10 +41,14 @@ public:
         case Frequency:
             return DATA[row][1];
         default:
-            return "No such role";
+            qDebug() << "invalid role " << role << endl;
+            return QVariant();
         }
     }
 
+    Q_INVOKABLE QString get(int row, int role) {
+        return DATA[row][role];
+    }
 
 };
 

@@ -26,6 +26,10 @@ Window {
             title: "Freq"
             role: "Frequency"
         }
+
+        onClicked: {
+            console.log(tunerModel.get(row, 0) + " - " + tunerModel.get(row, 1));
+        }
     }
 }
 
