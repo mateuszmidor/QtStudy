@@ -1,0 +1,8 @@
+What is this?
+	CustomPlugin - a QQmlExtensionPlugin example
+	
+How to run it?
+	0. cd build/
+	1. cmake ..
+	2. make && make install
+	3 ./CustomPluginBuild/Demo
